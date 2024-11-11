@@ -114,7 +114,7 @@ def insert_data(driver, data):
     print("Setting tags")
     if data.tags is not None:
         tags_input = driver.find_element(By.CSS_SELECTOR, 'input#new-tag-post_tag')
-        add_tags_btn = driver.find_element(By.CSS_SELECTOR, 'button.button.tagadd')
+        add_tags_btn = driver.find_element(By.CSS_SELECTOR, 'input.button.tagadd')
 
         tags_input.send_keys(data.get_tags())
         add_tags_btn.click()
