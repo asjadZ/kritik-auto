@@ -23,7 +23,7 @@ def main():
 
     provider: Provider = None
 
-    if(post.startswith('https://www.nst.com.my/')):
+    if (post.startswith('https://www.nst.com.my/')):
         provider = NST(post)
     else:
         print("Invalid post url")
@@ -38,6 +38,8 @@ def main():
     insert_data(driver, data)
 
     input()
+
+    driver.quit()
 
     pass
 
@@ -100,12 +102,24 @@ def insert_data(driver, data):
 
     driver.switch_to.default_content()
 
-    color_caret_btn =  driver.find_element(By.CSS_SELECTOR, '.mce-widget.mce-btn.mce-splitbtn.mce-colorbutton > :nth-child(2)')
+    color_caret_btn = driver.find_element(By.CSS_SELECTOR,
+                                          '.mce-widget.mce-btn.mce-splitbtn.mce-colorbutton > :nth-child(2)')
     color_caret_btn.click()
 
     black_color = driver.find_element(By.CSS_SELECTOR, '[data-mce-color="#000000"]')
 
     black_color.click()
+
+    time.sleep(1)
+    print("Setting tags")
+    if data.tags is not None:
+        tags_input = driver.find_element(By.CSS_SELECTOR, 'input#new-tag-post_tag')
+        add_tags_btn = driver.find_element(By.CSS_SELECTOR, 'button.button.tagadd')
+
+        tags_input.send_keys(data.get_tags())
+        add_tags_btn.click()
+    else:
+        print("No tags found, skipping")
 
     print('Setting featured image...')
     set_image_btn.click()

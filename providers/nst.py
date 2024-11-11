@@ -72,11 +72,15 @@ class NST(Provider):
 """
         excerpt = BeautifulSoup(articles[0], 'html.parser').text
 
+        tags = driver.find_elements(By.CSS_SELECTOR, '.article-content > .keywords > span')
+        tags = ', '.join(map(lambda x: x.text, tags))
+
         self.data = ProviderData(
             title=title,
             content=content,
             image=scaled_image,
-            excerpt=excerpt
+            excerpt=excerpt,
+            tags=tags
         )
 
 
