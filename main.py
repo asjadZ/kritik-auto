@@ -122,7 +122,8 @@ def insert_data(driver, data):
         print("No tags found, skipping")
 
     print('Setting featured image...')
-    set_image_btn.click()
+    # set_image_btn.click()
+    driver.execute_script("arguments[0].click()", set_image_btn)
     time.sleep(1)
 
     set_featured_image_btn = driver.find_element(By.CSS_SELECTOR,
