@@ -1,9 +1,10 @@
 class ProviderData:
-    def __init__(self, title = None, excerpt = None, content = None, image = None):
+    def __init__(self, title = None, excerpt = None, content = None, image = None, tags = None):
         self.title = title
         self.excerpt = excerpt
         self.content = content
         self.image = image
+        self.tags = tags
 
     def get_title(self):
         return self.title
@@ -20,6 +21,9 @@ class ProviderData:
     def get_content(self):
         return self.excerpt
         pass
+
+    def get_tags(self):
+        return self.tags
 
 class Provider:
 
