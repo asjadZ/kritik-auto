@@ -12,6 +12,8 @@ from providers.provider import ProviderData, Provider
 
 from dotenv import load_dotenv
 
+from providers.thestar import TheStar
+
 load_dotenv()
 
 kritik_user = os.getenv('KRITIK_USER')
@@ -25,6 +27,8 @@ def main():
 
     if (post.startswith('https://www.nst.com.my/')):
         provider = NST(post)
+    elif post.startswith('https://www.thestar.com.my/'):
+        provider = TheStar(post)
     else:
         print("Invalid post url")
         exit(-1)
