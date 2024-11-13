@@ -23,7 +23,6 @@ def main():
     print("Welcome to Kritik Long, Didn't Read(KLDR) developed by @aidilrx04")
 
     post = input('Enter post url(valid sites now: nst, thestar): ')
-    # post = 'https://www.thestar.com.my/news/nation/2024/11/01/deepavali-39-fatalities-3268-accidents-recorded-in-two-days-says-bukit-aman'
 
     provider: Provider = None
 
