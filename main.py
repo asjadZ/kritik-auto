@@ -1,17 +1,16 @@
 import os
 import time
 
-from bs4 import BeautifulSoup
-from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 from helpers.driver import chrome_driver
-from providers.nst import NST
-from providers.provider import ProviderData, Provider
+
+from providers.provider import Provider
 
 from dotenv import load_dotenv
 
+from providers.nst import NST
 from providers.thestar import TheStar
 
 load_dotenv()
