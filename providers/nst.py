@@ -44,7 +44,7 @@ class NST(Provider):
         for elem in to_be_deleted_elems:
             driver.execute_script('arguments[0].parentNode.removeChild(arguments[0])', elem)
 
-        articles = driver.find_elements(By.CSS_SELECTOR, "[itemprop='articleBody'] p")
+        articles = driver.find_elements(By.CSS_SELECTOR, "[itemprop='articleBody'] p, [itemprop='articleBody'] figure img")
         articles = list(map(lambda x: x.get_attribute('outerHTML'), articles))
 
         # article image
