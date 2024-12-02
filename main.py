@@ -122,7 +122,8 @@ def insert_data(driver, data):
         add_tags_btn = driver.find_element(By.CSS_SELECTOR, 'input.button.tagadd')
 
         tags_input.send_keys(data.get_tags())
-        add_tags_btn.click()
+        # add_tags_btn.click()
+        driver.execute_script("arguments[0].click()", add_tags_btn)
     else:
         print("No tags found, skipping")
 
