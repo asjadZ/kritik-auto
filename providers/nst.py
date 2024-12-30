@@ -47,8 +47,16 @@ class NST(Provider):
         articles = list(map(lambda x: x.get_attribute('outerHTML'), articles))
 
         # article image
-        image_tag = driver.find_element(By.CSS_SELECTOR, '.field-featured-image > figure > img')
-        image_url = image_tag.get_attribute('src')
+        image_url = None
+        try:
+            image_tag = driver.find_element(By.CSS_SELECTOR, '.field-featured-image > figure > img')
+            image_url = image_tag.get_attribute('src')
+        except:
+            # check if image is a carousel
+            image_tag = driver.find_element(By.CSS_SELECTOR, '.field-featured-image > .carousel > .carousel-inner > .carousel-item:first-child > figure > img')
+            image_url = image_tag.get_attribute('src')
+
+
         image = save_image_from_url(image_url)
         scaled_image = resize_image(image)
 
