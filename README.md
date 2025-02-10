@@ -1,6 +1,7 @@
 # Kritik Long, Didn't Read (KLDR)
 
-***Developed by [@aidilrx04](https://github.com/aidilrx04)***
+***V2 - Developed by [@asjadZ](https://github.com/akulaahhhh)***  
+***V1 - Developed by [@aidilrx04](https://github.com/aidilrx04)***
 
 A simple program to semi-automate article post insertion from other news source such as NST and TheStar.
 
