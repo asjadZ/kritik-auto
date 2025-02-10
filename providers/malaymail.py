@@ -1,4 +1,6 @@
 import time
+import spacy
+import pytextrank
 
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -7,6 +9,7 @@ from helpers.driver import chrome_driver
 from helpers.image import resize_image, save_image_from_url
 from helpers.url import get_hostname
 from providers.provider import Provider, ProviderData
+# from rake_nltk import Rake
 
 
 class MalayMail(Provider):
@@ -29,7 +32,7 @@ class MalayMail(Provider):
             author = driver.find_element(By.CSS_SELECTOR, '.article-byline').text
         except:
             # If not found, fall back to the last 3rd <p> in .article-body
-            pre_author = driver.find_element(By.CSS_SELECTOR, '.article-body > p:nth-last-of-type(1)').text
+            pre_author = driver.find_element(By.CSS_SELECTOR, '.article-body > p:nth-last-of-type(3)').text
             # Extract word after "—"
             if "—" in pre_author:
                 author = "By " + pre_author.split("—")[-1].strip()
@@ -37,8 +40,30 @@ class MalayMail(Provider):
                 author = pre_author.strip()
 
 
-        articles = driver.find_elements(By.CSS_SELECTOR, ".article-body p")
-        articles = list(map(lambda x: x.get_attribute('outerHTML'), articles))
+        articles_raw = driver.find_elements(By.CSS_SELECTOR, ".article-body p")
+        articles = list(map(lambda x: x.get_attribute('outerHTML'), articles_raw))
+
+        #Implement auto tags using TextRank & Spacy
+        nlp = spacy.load("en_core_web_sm")
+        articles_text = " ".join(map(lambda x: x.text, articles_raw))
+        nlp.add_pipe("textrank")
+        doc = nlp(articles_text)
+        # Print each phrase with its rank
+        for phrase in doc._.phrases[:15]:
+            print(f"{phrase.text}: {phrase.rank}")
+
+        # Extract top 10 phrases and join them into a string
+        tags = ", ".join(phrase.text for phrase in doc._.phrases[:10])
+
+        # WE ARE NOT USING RAKE BCS THE KEYWORD IS SO LONG
+        # rake = Rake()
+        # articles_text = " ".join(map(lambda x: x.text, articles_raw))
+        # rake.extract_keywords_from_text(articles_text)
+        # tags_raw = rake.get_ranked_phrases()
+        # tags_raw_score = rake.get_ranked_phrases_with_scores()
+        # tags = ", ".join(tags_raw[19:26])
+        # for phrase, score in tags_raw_score[19:26]:
+        #     print(f"{phrase}: {score}")
 
         # article image
 
@@ -72,7 +97,7 @@ class MalayMail(Provider):
 {source_p}
 """
         excerpt = BeautifulSoup(articles[0], 'html.parser').text
-        tags = ""
+
 
         self.data = ProviderData(
             title=title,
