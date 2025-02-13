@@ -32,7 +32,13 @@ class MalayMail(Provider):
             author = driver.find_element(By.CSS_SELECTOR, '.article-byline').text
         except:
             # If not found, fall back to the last 3rd <p> in .article-body
-            pre_author = driver.find_element(By.CSS_SELECTOR, '.article-body > p:nth-last-of-type(3)').text
+            paragraph = driver.find_elements(By.CSS_SELECTOR, '.article-body > p') #get all p in article body
+            pre_author = ""
+            for p in reversed(paragraph): #make a loop in reversed
+                text = p.text.strip()
+                if text: # check if the text has content
+                    pre_author = text
+                    break
             # Extract word after "—"
             if "—" in pre_author:
                 author = "By " + pre_author.split("—")[-1].strip()
@@ -49,7 +55,7 @@ class MalayMail(Provider):
         nlp.add_pipe("textrank")
         doc = nlp(articles_text)
         # Print each phrase with its rank
-        for phrase in doc._.phrases[:15]:
+        for phrase in doc._.phrases[11:20]:
             print(f"{phrase.text}: {phrase.rank}")
 
         # Extract top 10 phrases and join them into a string
