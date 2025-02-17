@@ -1,6 +1,7 @@
 import os
 import time
-
+# import os
+# os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -18,6 +19,97 @@ load_dotenv()
 
 kritik_user = os.getenv('KRITIK_USER')
 kritik_pass = os.getenv('KRITIK_PASS')
+
+
+
+category_map = {
+    "Advanced Technology": "70",
+    "Digital Transformation": "3291",
+    "Military": "3734",
+    "Science and Technology": "11",
+    "Smart City": "76",
+    "Technology": "6425",
+    "Agriculture": "69",
+    "Food Industries": "5326",
+    "Food Security": "5657",
+    "Arts & Literature": "56",
+    "Culture and Heritage": "2885",
+    "Automotive": "11988",
+    "Banking and Financial": "2",
+    "Budget": "3001",
+    "Fintech": "3233",
+    "Investment": "3000",
+    "Business Services": "46",
+    "Business Advisory": "3013",
+    "Business Tips": "3090",
+    "Corporate News": "84",
+    "Customer Service": "85",
+    "Productivity Tools": "77",
+    "Work Life Balance": "2877",
+    "Campaign": "53",
+    "Consumer Products": "54",
+    "Current Affairs": "47",
+    "Crime": "6287",
+    "Natural Disaster": "6125",
+    "War": "6156",
+    "Cybersecurity": "79",
+    "Economics": "51",
+    "Career": "6293",
+    "Gig Economy": "78",
+    "Editorial": "60",
+    "Education": "45",
+    "Energy": "12266",
+    "Entertainment": "6",
+    "Entrepreneurship": "64",
+    "Environment": "5484",
+    "Food and Beverage": "7",
+    "Healthcare": "52",
+    "Human Resource": "68",
+    "Career Tips": "3403",
+    "Coaching and Mentoring": "4992",
+    "Learning and Development": "4993",
+    "Workplace": "3059",
+    "Humor": "71",
+    "Infrastructure": "12414",
+    "International Affairs": "9",
+    "Investment": "72",
+    "JoeGetz Critical Lens": "11703",
+    "Leadership": "67",
+    "Transformation": "2878",
+    "Letters": "59",
+    "Life Style": "4206",
+    "Lifestyle": "29",
+    "Opinion": "58",
+    "Others": "1",
+    "Personal Development": "61",
+    "Politics": "10",
+    "Governance": "6703",
+    "Property": "12211",
+    "Public Services": "27",
+    "Religion": "12089",
+    "Sales and Marketing": "15",
+    "Advertising and Promotion": "6001",
+    "Content Marketing": "2870",
+    "Digital Marketing": "73",
+    "Scandals": "66",
+    "Fraud": "6177",
+    "Scam": "6178",
+    "Service Providers": "12",
+    "Social Issues": "28",
+    "Sports": "13",
+    "Startup": "65",
+    "Strategic Management": "83",
+    "Tech": "4204",
+    "Tourism and Hospitality": "8",
+    "Transportation": "14",
+    "Aviation": "8433",
+    "Travel and Leisure": "16",
+    "Utilities": "17",
+    "Power and Energy": "3068",
+    "Telecoms": "3067",
+    "World": "4192",
+    "Foods": "4202"
+}
 
 def main():
 
@@ -87,6 +179,17 @@ def insert_data(driver, data):
 
     print('Inserting excerpt...')
     excerpt_input.send_keys(data.excerpt)
+    time.sleep(.5)
+
+    print('Check Category...')
+    cats = data.category
+    for cat in cats:
+        if cat in category_map:
+            checkbox = driver.find_element(By.XPATH, f'//input[@value="{category_map[cat]}"]')
+            driver.execute_script("arguments[0].scrollIntoView(true);", checkbox)  # Scroll into view
+            time.sleep(0.5)  # Small delay to ensure it’s visible
+            if not checkbox.is_selected():  # Avoid rechecking if already checked
+                checkbox.click()
 
     time.sleep(.5)
     driver.execute_script("document.querySelector('#content-html').click()")
